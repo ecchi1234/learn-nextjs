@@ -8,7 +8,9 @@ export interface PostDetailPageProps {
 
 export default function PostDetailPage({ post }: PostDetailPageProps) {
   const router = useRouter();
-
+  if (router.isFallback) {
+    return <div style={{ fontSize: '2rem', textAlign: 'center' }}>Loading...</div>; // available when fallback is true
+  }
   if (!post) return null;
 
   return (
@@ -27,7 +29,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const data = await response.json();
   return {
     paths: data.data.map((post: any) => ({ params: { postId: post.id } })),
-    fallback: false,
+    fallback: true, // when fallback is blocking it will fetch data and display loading on UI, after receive data render UI
   };
 };
 
@@ -45,5 +47,6 @@ export const getStaticProps: GetStaticProps<PostDetailPageProps> = async (
     props: {
       post: data,
     },
+    revalidate: 5, // isr config
   };
 };
