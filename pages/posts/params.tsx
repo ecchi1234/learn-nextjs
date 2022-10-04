@@ -1,3 +1,4 @@
+import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 
@@ -11,4 +12,10 @@ export default function Params(props: ParamsProps) {
       <p>Query: {JSON.stringify(router.query)}</p>
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  return {
+    props: {},
+  };
 }
